@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
 import axiosClient from "../axios-client.js";
 
-const socket = io('http://localhost:3001')
+const socket = io('https://litactoe-frontend-fe028f89ec3b.herokuapp.com')
 
 const Lobby = () => {
 
