@@ -1,62 +1,45 @@
 import io from 'socket.io-client'
 import {useEffect, useState} from "react";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
-import axiosClient from "../axios-client.js";
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import TicTacToeGame from '../components/game.jsx';
 
-const socket = io('https://litactoe-frontend-fe028f89ec3b.herokuapp.com')
+//https://litactoe-frontend-fe028f89ec3b.herokuapp.com
+//localhost:3000
+const socket = io('http://localhost:3000')
+//keep on 3000
+
 
 const Lobby = () => {
 
-    const {user, token, setUser} = useStateContext()
-
-    const [message, setMessage] = useState('')
-    const [messages, setMessages] = useState([])
+    const { lobbyId } = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
-        socket.on('message', (msg) => {
-            setMessages((prevMessages) => [...prevMessages, msg])
-        })
 
-        return () => {
-            socket.off('message')
+        const validateLobby = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/validate-lobby/${lobbyId}`)
+                if(!response.data.exists) {
+                    navigate('/')
+                }
+            } catch (error) {
+                console.error('Error validating lobby:', error)
+                navigate('/')
+            }
         }
-    }, [])
 
-    const sendMessage = (e) => {
-        e.preventDefault()
+        validateLobby()
 
-        const msg = {
-            user: user.name,
-            text: message
-        }
-        socket.emit('message', msg)
-        setMessage('')
-
-    }
+    }, [lobbyId, navigate])
 
     return (
         <div className="container">
-            <h1>Lobby</h1>
-            <form onSubmit={sendMessage}>
-                <input
-                    type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Type a message"
-                />
-                <button type="submit">Send</button>
-            </form>
-            <div>
-                <h2>Messages:</h2>
-                <ul>
-                    {messages.map((msg, index) => (
-                        <li key={index}>
-                            <strong>{msg.user}</strong>: {msg.text}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            
+            <TicTacToeGame/>
         </div>
+        
     )
 }
 

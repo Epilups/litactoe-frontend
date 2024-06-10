@@ -3,6 +3,13 @@ import TopNavbar from "./TopNavbar.jsx";
 import {useEffect} from "react";
 import axiosClient from "../axios-client.js";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
+import styled from "styled-components";
+
+const TopDiv = styled.div`
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+`
 
 const MainLayout = () => {
 
@@ -24,12 +31,12 @@ const MainLayout = () => {
     }
 
     return (
-        <div>
+        <TopDiv>
             <TopNavbar/>
             <div className='mainContent'>
                 <Outlet/>
             </div>
-        </div>
+        </TopDiv>
     )
 }
 
