@@ -5,8 +5,24 @@ import styled from "styled-components"
 const Button = styled.button`
     width: 200px;
     height: 100px;
+    background-color: #3f3f3f;
+    border: solid;
+    border-width: 2px;
+    border-color: grey;
+    color: white;
+    border-radius: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #575757;
+    }
 `
 
+const Title = styled.h1`
+    font-size: 40px;
+    margin-bottom: 30px;
+`
 
 
 export default function DefaultLayout() {
@@ -31,7 +47,10 @@ export default function DefaultLayout() {
     return (
         <div className="container">
 
+            <Title> Welcome to litactoe, ready to play a game? </Title>
+
             <Button onClick={createGame}>Create game</Button>
+
         </div>
     )
 }

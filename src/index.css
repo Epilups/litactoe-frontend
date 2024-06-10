@@ -275,6 +275,10 @@ table > tbody > tr > td {
     font-size: 25px;
 }
 
+.status {
+    font-size: 1.5em;
+}
+
 
 /* spinner css */
 

@@ -4,11 +4,16 @@ import io from 'socket.io-client';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStateContext } from '../contexts/ContextProvider';
 
+const Container = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 const Board = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
 `;
 
 const Row = styled.div`
@@ -18,15 +23,26 @@ const Row = styled.div`
 const Cell = styled.button`
     height: 200px;
     width: 200px;
-    font-size: 12em;
+    font-size: 5em;
     margin: 5px;
     border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: ${(props) => (props.value === 'X' ? 'blue' : props.value === 'O' ? 'red' : '#575757')};
-    color: white; /* Ensure the text is visible on colored background */
+    color: white;
     border: 2px solid #000;
+`;
+
+const PlayerInfo = styled.div`
+    margin-left: 20px;
+    text-align: center;
+`;
+
+const PlayerName = styled.div`
+    font-size: 3.5em;
+    margin-bottom: 10px;
+    color: ${(props) => (props.isWinner ? 'green' : 'grey')};
 `;
 
 const WaitingContainer = styled.div`
@@ -34,9 +50,31 @@ const WaitingContainer = styled.div`
     align-items: center;
     flex-direction: column;
     padding-bottom: 160px;
-`
+`;
 
-const socket = io('https://litactoe-frontend-fe028f89ec3b.herokuapp.com');
+const UrlContainer = styled.div`
+    align-items: center;
+    margin-top: 20px;
+`;
+
+const UrlBox = styled.input`
+    padding: 10px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    width: 300px;
+    margin-right: 10px;
+`;
+
+const CopyButton = styled.button`
+    padding: 10px 20px;
+    background-color: #24221e;
+    color: #9d9d9d;
+    border-radius: 5px;
+    cursor: pointer;
+`;
+
+
+const socket = io('https://litactoe-frontend-fe028f89ec3b.herokuapp.com/');
 //http://localhost:3000
 //https://litactoe-frontend-fe028f89ec3b.herokuapp.com/
 
@@ -56,6 +94,7 @@ const TicTacToeGame = () => {
 
     useEffect(() => {
         if (!token) {
+            alert('You must Log in to play');
             navigate('/login');
             return;
         }
@@ -120,6 +159,11 @@ const TicTacToeGame = () => {
         }
     };
 
+    const handleCopyUrl = () => {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url)
+    };
+
     const renderCell = (index) => (
         <Cell onClick={() => handleClick(index)} value={board[index]}>
             {board[index]}
@@ -134,9 +178,9 @@ const TicTacToeGame = () => {
         return (
             <WaitingContainer>
                 <p className='waitingText'>Waiting for opponent to connect to the match...</p>
-                <br/>
-                <div class="loadingio-spinner-spinner-nq4q5u6dq7r">
-                    <div class="ldio-x2uulkbinbj">
+                <br />
+                <div className="loadingio-spinner-spinner-nq4q5u6dq7r">
+                    <div className="ldio-x2uulkbinbj">
                         <div></div>
                         <div></div>
                         <div></div>
@@ -151,20 +195,26 @@ const TicTacToeGame = () => {
                         <div></div>
                     </div>
                 </div>
+
+                <UrlContainer>
+                    <UrlBox value={window.location.href} readOnly />
+                    <CopyButton onClick={handleCopyUrl}>Share</CopyButton>
+                </UrlContainer>
+
             </WaitingContainer>
-        )
+        );
     }
 
     const currentPlayer = isXNext ? players[0] : players[1];
     const winnerPlayer = players.find(p => (p.symbol === winner));
 
     return (
-        <div className="game">
-            <div className="status">
-                {winner ? `Winner: ${winnerPlayer ? winnerPlayer.name : winner}` :
-                isDraw ? 'Game ended in a draw' : `Next player: ${currentPlayer ? currentPlayer.name : ''}`}
-            </div>
+        <Container>
             <Board>
+                <div className="status">
+                    {winner ? `Winner: ${winnerPlayer ? winnerPlayer.name : winner}` :
+                        isDraw ? 'Game ended in a draw' : `${currentPlayer ? currentPlayer.name : ''}'s turn`}
+                </div>
                 <Row>
                     {renderCell(0)}
                     {renderCell(1)}
@@ -181,7 +231,16 @@ const TicTacToeGame = () => {
                     {renderCell(8)}
                 </Row>
             </Board>
-        </div>
+            <PlayerInfo>
+                <PlayerName isWinner={winnerPlayer && winnerPlayer.symbol === 'X'}>
+                    {players[0] ? players[0].name : 'Player 1'}
+                </PlayerName>
+                <div>VS</div>
+                <PlayerName isWinner={winnerPlayer && winnerPlayer.symbol === 'O'}>
+                    {players[1] ? players[1].name : 'Player 2'}
+                </PlayerName>
+            </PlayerInfo>
+        </Container>
     );
 };
 

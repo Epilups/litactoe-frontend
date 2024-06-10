@@ -104,17 +104,6 @@ export default function TopNavbar() {
                 litactoe
             </LogoButton>
 
-            <NavLinks>
-
-                <NavItem>
-                    <Button>PLAY</Button>
-                    <DropdownContent>
-                        <DropdownLink to="/lobby">Create a game</DropdownLink>
-                    </DropdownContent>
-                </NavItem>
-
-            </NavLinks>
-
             <NavItem>
                 <Button>{token ? user.name : "ACCOUNT"}</Button>
                 <AccountDropdownContent>
