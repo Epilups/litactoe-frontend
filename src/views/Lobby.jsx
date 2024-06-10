@@ -5,11 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import TicTacToeGame from '../components/game.jsx';
 
-//https://litactoe-frontend-fe028f89ec3b.herokuapp.com
-//localhost:3000
-const socket = io('http://localhost:3000')
-//keep on 3000
-
 
 const Lobby = () => {
 
@@ -20,7 +15,10 @@ const Lobby = () => {
 
         const validateLobby = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/validate-lobby/${lobbyId}`)
+                const response = await axios.get(`https://litactoe-03e783c6e51a.herokuapp.com/api/validate-lobby/${lobbyId}`)
+                //http://localhost:8000/api/validate-lobby/${lobbyId}
+                //https://litactoe-03e783c6e51a.herokuapp.com/api/validate-lobby/${lobbyId}
+
                 if(!response.data.exists) {
                     navigate('/')
                 }

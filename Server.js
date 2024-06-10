@@ -22,7 +22,9 @@ app.use(express.static(path.join(__dirname, '/dist')));
 app.use('/lobby/:lobbyId', async (req, res, next) => {
     const { lobbyId } = req.params;
     try {
-        const response = await axios.get(`http://localhost:8000/api/validate-lobby/${lobbyId}`);
+        const response = await axios.get(`https://litactoe-03e783c6e51a.herokuapp.com/api/validate-lobby/${lobbyId}`);
+        //http://localhost:8000/api/validate-lobby/${lobbyId}
+        //https://litactoe-03e783c6e51a.herokuapp.com/api/validate-lobby/${lobbyId}
         if (response.data.exists) {
             next();
         } else {

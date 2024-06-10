@@ -36,7 +36,9 @@ const WaitingContainer = styled.div`
     padding-bottom: 160px;
 `
 
-const socket = io('http://localhost:3000');
+const socket = io('https://litactoe-frontend-fe028f89ec3b.herokuapp.com');
+//http://localhost:3000
+//https://litactoe-frontend-fe028f89ec3b.herokuapp.com/
 
 const TicTacToeGame = () => {
     const { lobbyId } = useParams();

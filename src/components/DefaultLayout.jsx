@@ -15,7 +15,10 @@ export default function DefaultLayout() {
 
     const createGame = async () => {
         try {
-            const response = await axios.post('http://localhost:8000/api/create-lobby')
+            const response = await axios.post('https://litactoe-03e783c6e51a.herokuapp.com/api/create-lobby')
+            //http://localhost:8000/api/create-lobby
+            //https://litactoe-03e783c6e51a.herokuapp.com/api/create-lobby
+
             const { lobbyId } = response.data
             navigate(`/lobby/${lobbyId}`)
         } catch (error) {
